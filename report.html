@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Report security issues or quickly check for common leaked passwords.">
+    <meta name="keywords" content="password leak check, report issue, security feedback">
+    <meta name="author" content="Abhi Raaj Pradhan">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <title>SecurePass | Report</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <header class="site-header" role="banner">
+        <div class="brand">
+            <a href="index.html" class="brand-link">SecurePass</a>
+            <span class="tagline">Password strength made simple</span>
+        </div>
+
+        <nav class="site-nav" role="navigation" aria-label="Primary">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="check.html" class="nav-link">Check</a>
+            <a href="tips.html" class="nav-link">Tips</a>
+            <a href="report.html" class="nav-link active" aria-current="page">Report</a>
+            <a href="about.html" class="nav-link">About</a>
+        </nav>
+    </header>
+
+    <main id="main-content" class="page">
+        <section class="content">
+            <header class="page-header">
+                <h1>Report &amp; Leak Check</h1>
+                <p>If you suspect a password has been leaked, this simple check can help. You can also send feedback about this tool.</p>
+                <br><br>
+            </header>
+
+            <div class="cards">
+                <article class="card">
+                    <h2>Quick Leak Check</h2>
+                    <p>This checks the entered password against a small list of commonly leaked passwords. Nothing is transmitted or stored.</p>
+                    <div class="input-group">
+                        <label for="leaked-password">Enter password to check</label>
+                        <input type="password" id="leaked-password" placeholder="Type a password" autocomplete="new-password">
+                    </div>
+                    <button type="button" id="leak-check-btn" class="button">Check</button>
+                    <p id="leak-result" class="strength-msg" aria-live="polite"></p>
+                </article>
+
+                <article class="card">
+                    <h2>Send Feedback</h2>
+                    <p>Let me know if you found a bug or want a feature added.</p>
+                    <form class="tool-form" id="report-form">
+                        <div class="input-group">
+                            <label for="report-email">Your Email </label>
+                            <input type="email" id="report-email" placeholder="you@example.com" autocomplete="email">
+                        </div>
+                        <div class="input-group">
+                            <label for="report-message">Message</label>
+                            <textarea id="report-message" rows="4" placeholder="Describe the issue or suggestion..."></textarea>
+                        </div>
+                        <button type="submit" class="button">Send Feedback</button>
+                        <p id="report-response" class="strength-msg" aria-live="polite"></p>
+                    </form>
+                </article>
+            </div>
+        </section>
+    </main>
+
+
+    <footer class="site-footer">
+        <p>&copy; 2026 Abhi Raaj Pradhan. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

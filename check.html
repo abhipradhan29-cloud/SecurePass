@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SecurePass Password Strength Checker and Generator.">
+    <meta name="keywords" content="password strength, password generator, security tool">
+    <meta name="author" content="Abhi Raaj Pradhan">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <title>SecurePass | Check</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <header class="site-header" role="banner">
+        <div class="brand">
+            <a href="index.html" class="brand-link">SecurePass</a>
+            <span class="tagline">Password strength made simple</span>
+        </div>
+
+        <nav class="site-nav" role="navigation" aria-label="Primary">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="check.html" class="nav-link active" aria-current="page">Check</a>
+            <a href="tips.html" class="nav-link">Tips</a>
+            <a href="report.html" class="nav-link">Report</a>
+            <a href="about.html" class="nav-link">About</a>
+        </nav>
+    </header>
+
+    <main id="main-content" class="page">
+        <section class="tool">
+            <div class="page-header">
+                <h1>Password Strength Checker</h1>
+                <p>Type a password below to see how strong it is. Try including uppercase, lowercase, numbers, and symbols.</p>
+                <br><br>
+            </div>
+
+            <form class="tool-form" id="password-form"></form>
+                <div class="card">
+                    <div class="input-group">
+                        <label for="email">Email (optional)</label>
+                        <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="password">Your Password</label>
+                        <input type="password" id="password" placeholder="Enter your password..." aria-describedby="msg" autocomplete="current-password" maxlength="64">
+                        <div id="strength-meter" aria-hidden="true">
+                            <div id="strength-bar"></div>
+                        </div>
+                        <p id="msg" class="strength-msg" aria-live="polite"></p>
+                    </div>
+
+                    <div class="generator-section">
+                        <button type="button" id="gen-btn">Generate Strong Password</button>
+                        <div class="result-box">
+                            <code><span id="generated-output">Generate</span></code>
+                            <button type="button" class="copy-btn" id="copy-btn">Copy</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <section class="hint">
+                <h2>What makes a strong password?</h2>
+                <ul>
+                    <li>At least 12 characters long</li>
+                    <li>Mix of uppercase + lowercase letters</li>
+                    <li>Include numbers and symbols</li>
+                    <li>Avoid common patterns and dictionary words</li>
+                </ul>
+            </section>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2026 Abhi Raaj Pradhan. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
