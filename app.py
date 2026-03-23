@@ -10,6 +10,9 @@ import mysql.connector
 
 load_dotenv()
 
+#This line grabs the URL you just pasted to Render
+db_url = os.getenv("DATABASE_URL")
+
 print("RUNNING...")
 print("🚀 STARTING APP...")
 
