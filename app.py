@@ -65,7 +65,7 @@ def append_feedback_fallback(email, message):
     data.append({
         'email': email,
         'message': message,
-        'submitted_at': (datetime.now(timezone.utc) + datetime.timedelta(hours=5, minutes=30)).strftime('%Y-%m-%d %H:%M:%S'),
+        'submitted_at': datetime.now(timezone.utc).isoformat(),
         'fallback': True
     })
 
