@@ -1,19 +1,14 @@
 from dotenv import load_dotenv
 import os
 import json
-from datetime import UTC, datetime, timezone
+from datetime import datetime, timezone
 import re
 
-from urllib.parse import urlparse
 from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
 import mysql.connector
 
 load_dotenv()
-
-#This line grabs the URL you just pasted to Render
-db_url = os.getenv("DATABASE_URL")
-url = urlparse(db_url)
 
 print("RUNNING...")
 print("🚀 STARTING APP...")
