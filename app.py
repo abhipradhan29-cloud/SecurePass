@@ -1,14 +1,19 @@
 from dotenv import load_dotenv
 import os
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 import re
 
+from urllib.parse import urlparse
 from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
 import mysql.connector
 
 load_dotenv()
+
+#This line grabs the URL you just pasted to Render
+db_url = os.getenv("DATABASE_URL")
+url = urlparse(db_url)
 
 print("RUNNING...")
 print("🚀 STARTING APP...")
@@ -65,7 +70,7 @@ def append_feedback_fallback(email, message):
     data.append({
         'email': email,
         'message': message,
-        'submitted_at': datetime.now(timezone.utc).isoformat(),
+        'submitted_at': (datetime.now(timezone.utc) + datetime.timedelta(hours=5, minutes=30)).strftime('%Y-%m-%d %H:%M:%S'),
         'fallback': True
     })
 
