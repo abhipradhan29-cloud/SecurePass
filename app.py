@@ -29,11 +29,11 @@ def get_db_connection():
         print("🔌 Connecting to Railway MySQL...")
 
         conn = mysql.connector.connect(
-            host=url.hostname,
-            user=url.username,
-            password=url.password,
-            database=url.path.lstrip('/'),
-            port=url.port,
+            host=os.getenv("MYSQLHOST"),
+            user=os.getenv("MYSQLUSER"),
+            password=os.getenv("MYSQLPASSWORD"),
+            database=os.getenv("MYSQLDATABASE"),
+            port=int(os.getenv("MYSQLPORT", 3306)),
             connection_timeout=5
         )
 
