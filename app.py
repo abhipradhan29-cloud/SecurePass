@@ -1,25 +1,43 @@
+from dotenv import load_dotenv
 import os
 import json
 from datetime import datetime, timezone
+import re
 
 from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
 import mysql.connector
 
-# Initialize Flask
+load_dotenv()
+
+print("RUNNING...")
+print("🚀 STARTING APP...")
+
 app = Flask(__name__, template_folder='.', static_folder='.', static_url_path='')
 CORS(app)
 
 # -----------------------------
-# MySQL Connection
+# MySQL Connection (Railway FIXED)
 # -----------------------------
 def get_db_connection():
-    return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="Abhiraaj@24",
-        database="securepass"
-    )
+    try:
+        print("🔌 Connecting to Railway MySQL...")
+
+        conn = mysql.connector.connect(
+            host=os.getenv("MYSQLHOST"),
+            user=os.getenv("MYSQLUSER"),
+            password=os.getenv("MYSQLPASSWORD"),
+            database=os.getenv("MYSQLDATABASE"),
+            port=int(os.getenv("MYSQLPORT", 3306)),
+            connection_timeout=5
+        )
+
+        print("✅ MySQL Connected (Railway)!")
+        return conn
+
+    except Exception as e:
+        print("❌ MySQL Connection Failed:", e)
+        return None
 
 # -----------------------------
 # Fallback (if DB fails)
@@ -60,21 +78,22 @@ def append_feedback_fallback(email, message):
 
 @app.route('/')
 def home():
+    print("🏠 Home route accessed")
     return render_template('index.html')
 
 
 @app.route('/api/report', methods=['POST'])
 def api_report():
+    print("📩 API /api/report called")
+
     data = request.get_json(silent=True)
 
-    # ✅ Validate JSON
     if not isinstance(data, dict):
         return jsonify({'success': False, 'error': 'Invalid data'}), 400
 
     email = (data.get('email') or '').strip()
     message = (data.get('message') or '').strip()
 
-    # ✅ Validation
     if not message:
         return jsonify({'success': False, 'error': 'Message required'}), 400
 
@@ -84,12 +103,16 @@ def api_report():
     if email and "@" not in email:
         return jsonify({'success': False, 'error': 'Invalid email'}), 400
 
-    conn = None
+    conn = get_db_connection()
+
+    if not conn:
+        print("⚠️ Using fallback file")
+        append_feedback_fallback(email, message)
+        return jsonify({'success': True, 'warning': 'Saved in fallback file'})
+
     try:
-        conn = get_db_connection()
         cursor = conn.cursor()
 
-        # ✅ MySQL uses %s (NOT ?)
         cursor.execute(
             "INSERT INTO feedback (email, message) VALUES (%s, %s)",
             (email if email else None, message),
@@ -99,24 +122,28 @@ def api_report():
         cursor.close()
         conn.close()
 
+        print("✅ Data inserted into MySQL")
+
         return jsonify({'success': True})
 
     except Exception as e:
-        print("DB Error:", e)
-
-        # Fallback to file
-        try:
-            append_feedback_fallback(email, message)
-            return jsonify({'success': True, 'warning': 'Saved in fallback file'})
-        except Exception:
-            return jsonify({'success': False, 'error': 'Failed to save'}), 500
+        print("❌ DB Insert Error:", e)
+        append_feedback_fallback(email, message)
+        return jsonify({'success': True, 'warning': 'Saved in fallback'})
 
 
 @app.route('/api/feedback', methods=['GET'])
 def api_feedback():
-    conn = None
+    print("📥 Fetching feedback")
+
+    conn = get_db_connection()
+
+    if not conn:
+        print("⚠️ Using fallback for fetch")
+        fallback = read_feedback_fallback()
+        return jsonify({'success': True, 'feedback': fallback})
+
     try:
-        conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
 
         cursor.execute(
@@ -130,8 +157,7 @@ def api_feedback():
         return jsonify({'success': True, 'feedback': rows})
 
     except Exception as e:
-        print("Fetch Error:", e)
-
+        print("❌ Fetch Error:", e)
         fallback = read_feedback_fallback()
         return jsonify({'success': True, 'feedback': fallback})
 
@@ -140,4 +166,5 @@ def api_feedback():
 # Run App
 # -----------------------------
 if __name__ == '__main__':
+    print("🔥 RUNNING FLASK SERVER...")
     app.run(debug=True)
