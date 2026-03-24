@@ -166,5 +166,7 @@ def api_feedback():
 # Run App
 # -----------------------------
 if __name__ == '__main__':
-    print("🔥 RUNNING FLASK SERVER...")
-    app.run(debug=True)
+    # Get port from environment variable, or use 10000 as default for Render
+    port = int(os.environ.get("PORT", 10000))
+    # Must bind to 0.0.0.0 to be visible to Render's network
+    app.run(host='0.0.0.0', port=port)
